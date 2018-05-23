@@ -8,3 +8,4 @@
     - "{{ vars_file }}"
   roles:
     - ec2
+    test
