@@ -1,0 +1,16 @@
+---
+
+- name: enable kudu-master
+  command: systemctl enable kudu-master
+
+- name: enable kudu-tserver
+  command: systemctl enable kudu-tserver
+
+- name: start impala-state-store
+  command: systemctl enable impala-state-store
+
+- name: start impala-catalog
+  command: systemctl enable impala-catalog
+
+- name: start impala-server
+  command: systemctl enable impala-server

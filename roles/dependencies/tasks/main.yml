@@ -1,0 +1,6 @@
+---
+- name: Install Zookeeper
+  include: install.yml
+  tags: install
+  when: 
+    - acname == "install"

@@ -1,0 +1,15 @@
+[Unit]
+Description=The tenginx HTTP and reverse proxy server
+After=syslog.target network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=forking
+PIDFile=/usr/local/tenginx/logs/tenginx.pid
+ExecStartPre=/usr/local/tenginx/sbin/nginx -t
+ExecStart=/usr/local/tenginx/sbin/nginx
+ExecReload=/usr/local/teginx/sbin/nginx -s reload
+ExecStop=/usr/local/tenginx/sbin/nginx -s stop
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

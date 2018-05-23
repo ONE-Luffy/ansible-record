@@ -1,0 +1,23 @@
+---
+- name: Creating host group postgresql from dynamic inventory
+  hosts: localhost
+  connection: local
+  tags: ['install', 'start', 'stop', 'restart', 'add_remote_user', 'enable', 'disable']
+  vars:
+    postgresql_tag_name: "tag_{{ postgresql_tag | replace('-', '_') }}"
+  tasks:
+    - add_host: name={{ item }} groups=postgresql
+      with_items: "{{ groups[postgresql_tag_name] }}"
+    
+
+- name: Execute postgresql roles
+  hosts: postgresql
+  user: centos
+  become: true
+  become_method: sudo
+  become_user: root
+  vars:
+    database_user: "root"
+    database_passwd: "root"
+  roles:
+    - role: postgresql

@@ -1,0 +1,4 @@
+---
+
+- name: stop mysql
+  command: systemctl stop mariadb

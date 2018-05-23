@@ -1,0 +1,19 @@
+- name: Configure log4j.properties
+  template:
+    src: log4j.properties.j2
+    dest: "{{ INSTALLATION_DIR }}/kafka/config/log4j.properties"
+
+- name: Configure zoo.cfg
+  template:
+    src: zoo_sample.cfg.j2
+    dest: "{{ INSTALLATION_DIR }}/kafka/config/zoo.cfg"
+
+- name: Configure myid
+  template:
+    src: myid.j2
+    dest: "{{ ZOOKEEPER_DATA_DIR }}/myid"
+
+- name: Configure kafka
+  template:
+    src: server_sample.cfg.j2
+    dest: "{{ INSTALLATION_DIR }}/kafka/config/server.cfg"

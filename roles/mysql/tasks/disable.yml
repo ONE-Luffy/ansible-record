@@ -1,0 +1,4 @@
+---
+
+- name: disable mariadb
+  command: systemctl disable mariadb

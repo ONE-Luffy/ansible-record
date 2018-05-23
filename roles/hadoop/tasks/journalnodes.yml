@@ -1,0 +1,9 @@
+- name: start journalnodes
+  command: "{{ HADOOP_HOME }}/sbin/hadoop-daemons.sh start journalnode"
+  when:
+    - acname == 'startjournal'
+
+- name: stop journalnodes
+  command: "{{ HADOOP_HOME }}/sbin/hadoop-daemons.sh stop journalnode"
+  when:
+    - acname == 'stopjournal'

@@ -1,0 +1,12 @@
+- name: create dynamodb table
+  dynamodb_table:
+    ec2_url:          "{{ ec2_url }}"
+    region:           "{{ region }}"
+    name:             "{{ table_name }}"
+    hash_key_name:    "{{ hash_key_name }}"
+    hash_key_type:    "{{ hash_key_type }}"
+    range_key_name:   "{{ range_key_name }}"
+    range_key_type:   "{{ range_key_type }}"
+    read_capacity:    "{{ read_capacity }}"
+    write_capacity:   "{{ write_capacity }}"
+    state:            "present"

@@ -1,0 +1,13 @@
+- name: Create Lambda Function
+  lambda:
+    ec2_url:          "{{ item.ec2_url }}"
+    region:           "{{item.region}}"
+    name:             "{{ item.name }}"
+    zip_file:         "{{ item.zip_file }}"
+    runtime:          "{{ item.runtime }}"
+    timeout:          "{{ item.timeout }}"
+    role:             "{{ item.role }}"
+    handler:          "{{ item.handler }}"
+    state: present
+  with_items:
+    "{{ lambda_functions }}"

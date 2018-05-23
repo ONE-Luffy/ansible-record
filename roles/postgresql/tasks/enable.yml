@@ -1,0 +1,4 @@
+---
+
+- name: enable postgresql
+  command: systemctl enable postgresql

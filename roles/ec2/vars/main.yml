@@ -1,0 +1,1 @@
+cluster_name: "tag_Name_{{ tag_key_vals.Name | replace('-', '_') }}"

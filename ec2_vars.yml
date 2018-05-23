@@ -1,0 +1,126 @@
+region:     "us-west-2"
+ec2_url:    "http://ec2.us-west-2.amazonaws.com" 
+
+key_name: "example"
+key_files: "~/.ssh/id_rsa"
+
+subnet_id: "subnet-1e125857"
+
+tag_key_vals:
+  Name: asdfsx-ec2-cluster
+  class: hadoop
+
+ec2_instances:
+  - image: ami-0c2aba6c
+    instance_type: t2.nano
+    group: default,ssh_enable,kudu_enable,vpc_subnet_internal_enable
+    instance_tags: 
+        Name: "{{ tag_key_vals.Name }}"
+        class: kudu
+    exact_count: 1
+    count_tag: 
+        Name: kudu
+    vpc_subnet_id: "{{ subnet_id }}"
+    region: "{{ region }}"
+    ec2_url: "{{ ec2_url }}"
+    assign_public_ip: yes
+    key_name: "{{ key_name }}"
+
+#   - image: ami-0c2aba6c
+#     instance_type: t2.nano
+#     group: default,ssh_enable,mysql,postgres
+#     instance_tags: 
+#         Name: "{{ tag_key_vals.Name }}"
+#         class: database
+#         class2: zookeeper
+#     exact_count: 1
+#     count_tag: 
+#         Name: database
+#     vpc_subnet_id: "{{ subnet_id }}"
+#     region: "{{ region }}"
+#     ec2_url: "{{ ec2_url }}"
+#     assign_public_ip: yes
+#     key_name: "{{ key_name }}"
+
+  - image: ami-0c2aba6c
+    instance_type: t2.micro
+    group: default,ssh_enable,kafka
+    instance_tags: 
+        Name: "{{ tag_key_vals.Name }}"
+        class: kafka
+        class2: nginx
+    exact_count: 1
+    count_tag: 
+        Name: kafka
+    vpc_subnet_id: "{{ subnet_id }}"
+    region: "{{ region }}"
+    ec2_url: "{{ ec2_url }}"
+    assign_public_ip: yes
+    key_name: "{{ key_name }}"
+
+#   - image: ami-0c2aba6c
+#     instance_type: t2.medium
+#     group: default,ssh_enable
+#     instance_tags: 
+#         Name: "{{ tag_key_vals.Name }}"
+#         class: hadoop
+#         class2: namenode
+#         class6: resourcemanager
+#     exact_count: 1
+#     count_tag: 
+#         Name: hadoop
+#     vpc_subnet_id: "{{ subnet_id }}"
+#     region: "{{ region }}"
+#     ec2_url: "{{ ec2_url }}"
+#     assign_public_ip: yes
+#     key_name: "{{ key_name }}"
+
+#   - image: ami-0c2aba6c
+#     instance_type: t2.medium
+#     group: default,ssh_enable
+#     instance_tags: 
+#         Name: "{{ tag_key_vals.Name }}"
+#         class: hadoop
+#         class2: namenode
+#         class3: datanode
+#         class4: historyserver
+#     exact_count: 1
+#     count_tag: 
+#         Name: hadoop
+#     vpc_subnet_id: "{{ subnet_id }}"
+#     region: "{{ region }}"
+#     ec2_url: "{{ ec2_url }}"
+#     assign_public_ip: yes
+#     key_name: "{{ key_name }}"
+
+#   - image: ami-0c2aba6c
+#     instance_type: t2.medium
+#     group: default,ssh_enable
+#     instance_tags: 
+#         Name: "{{ tag_key_vals.Name }}"
+#         class: hadoop
+#         class3: datanode
+#         class5: journalnodes
+#     exact_count: 2
+#     count_tag: 
+#         Name: hadoop
+#     vpc_subnet_id: "{{ subnet_id }}"
+#     region: "{{ region }}"
+#     ec2_url: "{{ ec2_url }}"
+#     assign_public_ip: yes
+#     key_name: "{{ key_name }}"
+
+######################################################
+#  - image: ami-7172b611
+#    instance_type: t2.nano
+#    group: ssh_enable,mysql,postgres
+#    instance_tags:
+#        Name: "lambda develop"
+#    exact_count: 1
+#    count_tag:
+#        Name: develop
+#    vpc_subnet_id: "{{ subnet_id }}"
+#    region: "{{ region }}"
+#    ec2_url: "{{ ec2_url }}"
+#    assign_public_ip: yes
+#    key_name: "{{ key_name }}"

@@ -1,0 +1,4 @@
+---
+
+- name: start mysql
+  command: systemctl start mariadb

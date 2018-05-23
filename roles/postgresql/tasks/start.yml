@@ -1,0 +1,4 @@
+---
+
+- name: start postgresql
+  command: systemctl start postgresql

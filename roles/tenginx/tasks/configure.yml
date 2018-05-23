@@ -1,0 +1,6 @@
+- name: install service
+  template:
+    src: "{{ item }}"
+    dest: "{{ INSTALLATION_DIR }}/conf"
+  with_items:
+    - nginx.conf

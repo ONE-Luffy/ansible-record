@@ -1,0 +1,4 @@
+---
+
+- name: enable mariadb
+  command: systemctl enable mariadb

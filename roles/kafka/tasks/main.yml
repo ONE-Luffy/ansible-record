@@ -1,0 +1,55 @@
+- name: Check if kafka is installed
+  stat:
+    path: "{{ KAFKA_HOME }}"
+  register: kafka
+  tags: ['start', 'stop', 'install', 'uninstall', 'info']
+
+- name: Debug
+  debug: var=kafka
+  tags: ['start', 'stop', 'install', 'uninstall', 'info']
+
+- name: Debug2
+  debug: var=hostvars[inventory_hostname]['ec2_dns_name']
+  tags: ['start', 'stop', 'install', 'uninstall', 'info']
+
+- name: Install Kafka
+  include: install.yml
+  tags: install
+  when: 
+    - kafka.stat.exists == False
+    - acname == "install"
+
+- name: Configure Kafka
+  include: configure.yml
+  tags: ["install", "configure"]
+  when: acname in ["install", "configure"]
+
+- name: Fail play if Kafka is not installed
+  fail:
+    msg: "Kafka is not installed"
+  tags: ['start', 'stop', 'uninstall', 'info']
+  when: 
+    - kafka.stat.exists == False
+    - acname in ['start', 'stop', 'uninstall', 'info']
+
+- name: Start kafka
+  include: start.yml
+  tags: start
+  when: acname =="start"
+
+- name: Stop kafka
+  include: stop.yml
+  tags: ['stop', 'uninstall']
+  when: acname in ['stop', 'uninstall']
+
+- name: Uninstall kafka
+  include: uninstall.yml
+  tags: uninstall
+  when: 
+    - kafka.stat.exists == True
+    - acname == "uninstall"
+
+- name: Kafka info
+  include: info.yml
+  tags: info
+  when: acname == "info"

@@ -1,0 +1,19 @@
+---
+- name: Creating host group kudu from dynamic inventory
+  hosts: localhost
+  connection: local
+  tags: ['start', 'stop', 'restart', 'enable', 'disable']
+  vars:
+    kudu_tag_name: "tag_{{ kudu_tag | replace('-', '_') }}"
+  tasks:
+    - add_host: name={{ item }} groups=kudu
+      with_items: "{{ groups[kudu_tag_name] }}"
+
+- name: Execute kudu roles
+  hosts: kudu
+  user: centos
+  become: true
+  become_method: sudo
+  become_user: root
+  roles:
+    - role: kudu

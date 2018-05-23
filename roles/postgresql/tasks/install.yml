@@ -1,0 +1,16 @@
+---
+
+- name: install postgresql
+  command: yum install -y postgresql-server postgresql-contrib
+
+- name: init postgresql
+  include: initdb.yml
+
+- name: configure postgresql
+  include: configure.yml
+
+- name: enable postgresql
+  include: enable.yml
+
+- name: start postgresql
+  include: start.yml

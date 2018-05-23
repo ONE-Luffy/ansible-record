@@ -1,0 +1,79 @@
+---
+- name: Creating host groups from dynamic inventory
+  hosts: localhost
+  connection: local
+  tags: ['info', 'install', 'start', 'stop', 'uninstall', 'ssh', 'configure', 
+         'startjournal', 'stopjournal', 'format_namenode','start_dfs', 'stop_dfs',
+         'start_yarn', 'stop_yarn']
+  vars:
+    zookeeper_tag_original: "{{ zookeeper_tag | default('') }}"
+    zookeeper_tag_name: "tag_{{ zookeeper_tag_original | replace('-', '_') }}"
+    hadoop_tag_original: "{{ hadoop_tag | default('') }}"
+    hadoop_tag_name: "tag_{{ hadoop_tag_original | replace('-', '_') }}"
+    namenode_tag_original: "{{ namenode_tag | default('') }}"
+    namenode_tag_name: "tag_{{ namenode_tag_original | replace('-', '_') }}"
+    datanode_tag_original: "{{ datanode_tag | default('') }}"
+    datanode_tag_name: "tag_{{ datanode_tag_original | replace('-', '_') }}"
+    journalnode_tag_original: "{{ journalnode_tag | default('') }}"
+    journalnode_tag_name: "tag_{{ journalnode_tag_original | replace('-', '_') }}"
+    historyserver_tag_original: "{{ historyserver_tag | default('') }}"
+    historyserver_tag_name: "tag_{{ historyserver_tag_original | replace('-', '_') }}"
+    resourcemanager_tag_original: "{{ resourcemanager_tag | default('') }}"
+    resourcemanager_tag_name: "tag_{{ resourcemanager_tag_original | replace('-', '_') }}"
+  tasks:
+    - debug: msg={{groups}}
+    - add_host: name={{ item }} groups=zookeepers
+      with_items: "{{ groups[zookeeper_tag_name] }}"
+      when:
+        zookeeper_tag_name | trim != "tag_"
+
+    - add_host: name={{ item }} groups=hadoop
+      with_items: "{{ groups[hadoop_tag_name] }}"
+      when: 
+        hadoop_tag_name | trim != "tag_"
+
+    - add_host: name={{ item }} groups=namenodes
+      with_items: "{{ groups[namenode_tag_name] }}"
+      when: 
+        namenode_tag_name | trim != "tag_"
+
+    - add_host: name={{ item }} groups=datanodes
+      with_items: "{{ groups[datanode_tag_name] }}"
+      when: 
+        datanode_tag_name | trim != "tag_" 
+    
+    - add_host: name={{ item }} groups=journalnodes
+      with_items: "{{ groups[journalnode_tag_name] }}"
+      when: 
+        journalnode_tag_name | trim != "tag_" 
+  
+    - add_host: name={{ item }} groups=historyserver
+      with_items: "{{ groups[historyserver_tag_name] }}"
+      when: 
+        historyserver_tag_name | trim != "tag_" 
+    
+    - add_host: name={{ item }} groups=resourcemanager
+      with_items: "{{ groups[resourcemanager_tag_name] }}"
+      when: 
+        resourcemanager_tag_name | trim != "tag_" 
+    - debug: msg="{{ groups }}"
+
+- name: Gather zookeeper ec2 facts
+  hosts: zookeepers
+  user: centos
+  become: true
+  become_method: sudo
+  become_user: root
+  tasks:
+    - ec2_facts:
+      register:
+        zookeeper_facts
+
+- name: Execute Hadoop roles
+  hosts: hadoop
+  user: centos
+  become: true
+  become_method: sudo
+  become_user: root
+  roles:
+    - role: hadoop

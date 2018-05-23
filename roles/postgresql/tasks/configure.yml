@@ -1,0 +1,7 @@
+---
+
+- name: config postgres postgresql.conf
+  command: sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /var/lib/pgsql/data/postgresql.conf
+
+- name: config postgres pg_hba.conf
+  shell: echo "host    all             all             0.0.0.0/0               password" >> /var/lib/pgsql/data/pg_hba.conf

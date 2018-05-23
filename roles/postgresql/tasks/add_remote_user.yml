@@ -1,0 +1,14 @@
+---
+
+- name: create database user
+  become: true
+  become_method : sudo
+  become_user: postgres
+  command: psql -c "CREATE USER {{ database_user }} WITH SUPERUSER PASSWORD '{{ database_passwd }}';"
+#  command: createuser {{database_user}} --superuser
+  
+- name: create database for database user
+  become: true
+  become_method : sudo
+  become_user: postgres
+  command: createdb -O {{database_user}} {{database_user}}

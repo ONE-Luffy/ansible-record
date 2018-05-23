@@ -1,0 +1,14 @@
+---
+# Creates a new ec2 key pair named `example` if not present using provided key
+# material
+- name:               create an new key pair
+  command: 
+    ssh-keygen -t rsa -f {{ key_files }} -N '' -C '{{ key_name }}' creates={{ key_files }}
+
+- name:                example ec2 key
+  ec2_key:
+    region:            "{{ region }}"
+    ec2_url:           "{{ ec2_url }}"
+    name:              "{{ key_name }}"
+    key_material:      "{{ item }}"
+  with_file:           "{{ key_files }}.pub"

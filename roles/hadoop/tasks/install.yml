@@ -1,0 +1,41 @@
+- name: Install open-jdk
+  yum:
+    name: java-1.8.0-openjdk-devel
+    state: present
+
+- name: Install nc
+  yum:
+    name: nc
+    state: present
+
+- name: Download Hadoop Tar
+  get_url:
+    url: "{{ HADOOP_URL }}"
+    dest: "{{ INSTALLATION_DIR }}"
+    mode: 0644
+
+- name: Unpack Hadopo tar
+  shell: tar zxvf {{ INSTALLATION_DIR }}/{{ HADOOP_TAR }} -C {{ INSTALLATION_DIR }}
+
+- name: Remove Hadoop tar
+  file:
+    path: "{{ INSTALLATION_DIR }}/{{ HADOOP_TAR }}"
+    owner: root
+    state: absent
+
+- name: Move hadoop-{{ HADOOP_VERSION }} to hadoop
+  shell: mv {{ INSTALLATION_DIR }}/hadoop-{{ HADOOP_VERSION }} {{ INSTALLATION_DIR }}/hadoop
+
+- name: Create data directory
+  file:
+    path: "{{ HADOOP_DATA_DIR }}"
+    state: directory
+    owner: root
+    mode: 0644
+
+- name: Create Hadoop log directory
+  file:
+    path: "{{ HADOOP_LOG_DIR }}"
+    state: directory
+    owner: root
+    mode: 0644

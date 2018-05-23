@@ -1,0 +1,4 @@
+scala_version: 2.11.11
+scala_install_dir: /root
+scala_home: /root/scala-{{scala_version}}
+scala_download_url: https://downloads.lightbend.com/scala/{{scala_version}}/scala-{{scala_version}}.tgz

@@ -1,0 +1,21 @@
+---
+
+- name: Create Role
+  include: create_role.yml
+  when: acname == "create_role"
+  tags: ['create_role']
+
+- name: Delete Role
+  include: delete_role.yml
+  when: acname == "delete_role"
+  tags: ['delete_role']
+
+- name: Add Policy
+  include: add_policy.yml
+  when: acname == "add_policy"
+  tags: ['add_policy']
+
+- name: Delete Policy
+  include: delete_policy.yml
+  when: acname == "delete_policy"
+  tags: ['delete_policy']

@@ -1,0 +1,23 @@
+---
+- name: Creating host group kafka from dynamic inventory
+  hosts: localhost
+  connection: local
+  tags: ['info', 'install', 'start', 'stop', 'uninstall', 'configure']
+  vars:
+    kafka_tag_name: "tag_{{ kafka_tag | replace('-', '_') }}"
+  tasks:
+    - debug:
+        var: groups
+    - add_host: name={{ item }} groups=kafka
+      with_items: "{{ groups[kafka_tag_name] }}"
+    - debug:
+        var: hostvars
+
+- name: Execute Kafka roles
+  hosts: kafka
+  user: centos
+  become: true
+  become_method: sudo
+  become_user: root
+  roles:
+    - role: kafka

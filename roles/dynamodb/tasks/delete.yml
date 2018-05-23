@@ -1,0 +1,6 @@
+- name: create dynamodb table
+  dynamodb_table:
+    ec2_url:          "{{ ec2_url }}"
+    region:           "{{ region }}"
+    name:             "{{ table_name }}"
+    state:            "absent"

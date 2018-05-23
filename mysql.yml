@@ -1,0 +1,24 @@
+---
+- name: Creating host group mysql from dynamic inventory
+  hosts: localhost
+  connection: local
+  tags: ['start', 'stop', 'restart', 'add_remote_user', 'enable', 'disable']
+  vars:
+    mysql_tag_name: "tag_{{ mysql_tag | replace('-', '_') }}"
+  tasks:
+    - debug: var=groups
+    - add_host: name={{ item }} groups=mysql
+      with_items: "{{ groups[mysql_tag_name] }}"
+    
+
+- name: Execute Mysql roles
+  hosts: mysql
+  user: centos
+  become: true
+  become_method: sudo
+  become_user: root
+  vars:
+    database_user: "root"
+    database_passwd: "root"
+  roles:
+    - role: mysql

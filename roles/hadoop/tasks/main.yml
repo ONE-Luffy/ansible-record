@@ -1,0 +1,79 @@
+- name: Check if hadoop is installed
+  stat:
+    path: "{{ HADOOP_HOME }}"
+  register: hadoop
+  tags: ['start', 'stop', 'install', 'uninstall', 'info', 'configure']
+
+- name: Debug
+  debug: var=hadoop
+  tags: ['start', 'stop', 'install', 'uninstall', 'info', 'ssh']
+
+- name: Install hadoop
+  include: install.yml
+  tags: install
+  when: 
+    - hadoop.stat.exists == False
+    - acname == "install"
+
+- name: Config ssh
+  include: ssh.yml
+  tags: ssh
+  when: 
+    - acname == "ssh"
+
+- name: Configure hadoop
+  include: configure.yml
+  tags: ["configure"]
+  when:
+    - hadoop.stat.exists == True
+    - acname in ["configure"]
+
+- name: Fail play if hadoop is not installed
+  fail:
+    msg: "hadoop is not installed"
+  tags: ['start', 'stop', 'uninstall', 'info']
+  when: 
+    - hadoop.stat.exists == False
+    - acname in ['start', 'stop', 'uninstall', 'info']
+
+- name: start or stop jounnalnodes
+  include: journalnodes.yml
+  tags: ['startjournal', 'stopjournal']
+  when:
+    - acname in ['startjournal', 'stopjournal']
+    - inventory_hostname == groups['journalnodes'][0]
+
+- name: format namenode
+  include: format_namenode.yml
+  tags: ['format_namenode']
+  when:
+    - acname in ['format_namenode']
+    - inventory_hostname == groups['namenodes'][0]
+
+- name: format secondary
+  include: format_namenode_secondary.yml
+  tags: ['format_namenode']
+  when:
+    - acname in ['format_namenode']
+    - inventory_hostname == groups['namenodes'][1]
+
+- name: start datanode
+  include: datanode.yml
+  tags: ['datanode']
+  when:
+    - acname in ['datanode']
+    - inventory_hostname in groups['datanode']
+
+- name: start or stop dfs
+  include: yarn.yml
+  tags: ['start_yarn', 'stop_yarn']
+  when:
+    - acname in ['start_yarn', 'stop_yarn']
+    - inventory_hostname == groups['namenodes'][0]
+
+- name: start or stop dfs
+  include: yarn.yml
+  tags: ['start_dfs', 'stop_dfs']
+  when:
+    - acname in ['start_dfs', 'stop_dfs']
+    - inventory_hostname == groups['namenodes'][0]

@@ -1,0 +1,9 @@
+- name: create sns topic
+  sns_topic:
+    ec2_url:          "{{ ec2_url }}"
+    region:           "{{ region }}"
+    name:             "{{ topic_name }}"
+    state:            "present"
+    display_name:     "{{ topic_display_name }}"
+    subscriptions:
+      "{{ subscriptions }}"

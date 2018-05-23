@@ -1,0 +1,20 @@
+---
+- name: Creating host group dependencies from dynamic inventory
+  hosts: localhost
+  connection: local
+  tags: ['install']
+  tasks:
+    - debug: var=groups
+    - add_host: name={{ item }} groups=dependencies
+      with_items: "{{ groups['all'] }}"
+    - debug: var=groups
+
+
+- name: Execute Dependencies roles ===
+  hosts: dependencies
+  user: centos
+  become: true
+  become_method: sudo
+  become_user: root
+  roles:
+    - role: dependencies

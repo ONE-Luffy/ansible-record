@@ -1,0 +1,11 @@
+
+- name: Create IAM role with custom trust relationship
+  iam:
+    iam_type: role
+    name: "{{ item.role_name }}"
+    path: "{{ item.path }}"
+    state: present
+    trust_policy:
+      "{{ item.trust_policy }}"
+  with_items:
+    "{{ iam_roles }}"

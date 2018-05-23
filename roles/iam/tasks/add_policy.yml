@@ -1,0 +1,10 @@
+
+- name: Add Policy to the specific role
+  iam_policy:
+    iam_type: "{{ item.iam_type }}"
+    iam_name: "{{ item.iam_name }}"
+    policy_name: "{{ item.policy_name }}"
+    policy_json: "{{ item.policy_json }}"
+    state: present
+  with_items:
+    "{{ iam_policies }}"

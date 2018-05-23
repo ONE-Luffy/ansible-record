@@ -1,0 +1,16 @@
+---
+
+- name: restart kudu-master
+  command: systemctl restart kudu-master
+
+- name: restart kudu-tserver
+  command: systemctl restart kudu-tserver
+
+- name: start impala-state-store
+  command: systemctl restart impala-state-store
+
+- name: start impala-catalog
+  command: systemctl restart impala-catalog
+
+- name: start impala-server
+  command: systemctl restart impala-server

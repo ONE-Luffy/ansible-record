@@ -1,0 +1,16 @@
+---
+
+- name: disable kudu-master
+  command: systemctl disable kudu-master
+
+- name: disable kudu-tserver
+  command: systemctl disable kudu-tserver
+
+- name: start impala-state-store
+  command: systemctl disable impala-state-store
+
+- name: start impala-catalog
+  command: systemctl disable impala-catalog
+
+- name: start impala-server
+  command: systemctl disable impala-server

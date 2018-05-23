@@ -1,0 +1,4 @@
+---
+
+- name: restart postgresql
+  command: systemctl restart postgresql

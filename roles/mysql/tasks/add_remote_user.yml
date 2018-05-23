@@ -1,0 +1,17 @@
+---
+
+
+- name: create remote user
+  command: mysql -e "CREATE USER '{{database_user}}'@'%' IDENTIFIED BY '{{database_passwd}}';"
+
+- name: grant privillage
+  command: mysql -e "GRANT all ON *.* TO '{{database_user}}'@'%' IDENTIFIED by '{{database_passwd}}';"
+
+- name: Gather facts
+  ec2_facts:
+
+- name: grant privillage2
+  command: mysql -e "GRANT all ON *.* TO '{{database_user}}'@'{{ ansible_ec2_local_hostname }}' IDENTIFIED by '{{database_passwd}}';"
+
+- name: grant privillage3
+  command: mysql -e "GRANT all ON *.* TO '{{database_user}}'@'{{ ansible_ec2_local_ipv4 }}' IDENTIFIED by '{{database_passwd}}';"

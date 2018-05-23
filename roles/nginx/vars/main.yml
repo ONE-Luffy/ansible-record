@@ -1,0 +1,11 @@
+NGINX_VERSION: 1.13.6
+NGINX_URL: http://nginx.org/download/nginx-{{ NGINX_VERSION }}.tar.gz
+TARBALL_NAME: nginx-{{ NGINX_VERSION }}.tar.gz
+BUILD_DIR: /root/nginx-{{ NGINX_VERSION }}
+DOWNLOAD_DIR: /root
+INSTALLATION_DIR: /usr/local/nginx
+NGINX_APP_LOG_DIR: /usr/local/nginx/logs/app
+NGINX_APP_LOG_PATH: "{{ NGINX_APP_LOG_DIR }}/%Y%m%d/access_%Y%m%d%H.log"
+PRODUCER_LOG_PATH: "{{ NGINX_APP_LOG_DIR }}/%s/access_%s.log"
+PRODUCER_URL: https://github.com/asdfsx/kafkaproducer/archive/master.zip
+PRODUCER_PATH: /root/kafkaproducer-master

@@ -1,0 +1,10 @@
+- name: Send notification message via SNS
+  sns:
+    ec2_url:    "{{ ec2_url }}"
+    region:     "{{ region }}"
+    topic:      "{{ topic_name }}"
+    subject:    "Hello"
+    msg:        "Hello world"
+  register:     result
+
+- debug: var=result

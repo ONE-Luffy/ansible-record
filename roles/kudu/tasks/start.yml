@@ -1,0 +1,16 @@
+---
+
+- name: start kudu-master
+  command: systemctl start kudu-master
+
+- name: start kudu-tserver
+  command: systemctl start kudu-tserver
+
+- name: start impala-state-store
+  command: systemctl start impala-state-store
+
+- name: start impala-catalog
+  command: systemctl start impala-catalog
+
+- name: start impala-server
+  command: systemctl start impala-server

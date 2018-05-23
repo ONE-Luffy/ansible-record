@@ -1,0 +1,16 @@
+---
+
+- name: Create SNS Topic
+  include: create.yml
+  when: acname == "create"
+  tags: ['create']
+
+- name: Delete SNS Topic
+  include: delete.yml
+  when: acname == "delete"
+  tags: ['delete']
+
+- name: Send Message to SNS Topic
+  include: send.yml
+  when: acname == "send"
+  tags: ['send']

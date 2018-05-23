@@ -1,0 +1,73 @@
+# AWS Credentials
+aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
+aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+# http://docs.aws.amazon.com/general/latest/gr/rande.html#ec2_region
+aws_region:     "us-west-2"
+aws_ec2_url:    "http://ec2.us-west-2.amazonaws.com" 
+
+# VPC Information
+vpc_name:       "My VPC"
+vpc_cidr_block: "10.0.0.0/16"
+
+# Subnets
+public_subnet_1_cidr:  "10.0.0.0/24"
+
+# Security Groups
+security_group:
+  - name: vpc_subnet_internal_enable
+    desc: the security group for vpc subnet internal
+    rules:
+      - proto: tcp
+        from_port: 0
+        to_port: 65535
+        cidr_ip: 10.0.0.0/24
+
+  - name: ssh_enable
+    desc: the security group for the ssh
+    rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+
+  - name: kudu_enable
+    desc: the security group for the kudu
+    rules:
+      - proto: tcp
+        from_port: 8051
+        to_port: 8051
+        cidr_ip: 0.0.0.0/0
+
+      - proto: tcp
+        from_port: 8050
+        to_port: 8050
+        cidr_ip: 0.0.0.0/0
+      
+      - proto: tcp
+        from_port: 7051
+        to_port: 7051
+        cidr_ip: 0.0.0.0/0
+
+  - name: mysql
+    desc: the security group for the mysql
+    rules:
+      - proto: tcp
+        from_port: 3306
+        to_port: 3306
+        cidr_ip: 0.0.0.0/0
+
+  - name: postgres
+    desc: the security group for the postgres
+    rules:
+      - proto: tcp
+        from_port: 5432
+        to_port: 5432
+        cidr_ip: 0.0.0.0/0
+  
+  - name: kafka
+    desc: the security group for the kafka
+    rules:
+      - proto: tcp
+        from_port: 9092
+        to_port: 9092
+        cidr_ip: 0.0.0.0/0

@@ -1,0 +1,17 @@
+- name: Delete hadoop
+  file:
+    path: "{{ HADOOP_HOME }}"
+    state: absent
+    owner: root
+
+- name: Delete hadoop data dir
+  file:
+    path: "{{ HADOOP_DATA_DIR }}"
+    state: absent
+    owner: root
+
+- name: Delete zookeeper log dir
+  file:
+    path: "{{ HADOOP_LOG_DIR }}"
+    state: absent
+    owner: root

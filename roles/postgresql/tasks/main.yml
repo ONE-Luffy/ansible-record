@@ -1,0 +1,38 @@
+---
+
+# roles/postgresql/tasks/main.yml
+
+- name: Install postgresql
+  include: install.yml
+  when: acname == "install"
+  tags: ['install']
+
+- name: Start postgresql
+  include: start.yml
+  when: acname == "start"
+  tags: ['start']
+
+- name: Stop postgresql
+  include: stop.yml
+  when: acname == "stop"
+  tags: ['stop']
+
+- name: Restart postgresql
+  include: restart.yml
+  when: acname == "restart"
+  tags: ['restart']
+
+- name: Enable postgresql
+  include: enable.yml
+  when: acname == "enable"
+  tags: ['enable']
+
+- name: Disable postgresql
+  include: disable.yml
+  when: acname == "disable"
+  tags: ['disable']
+
+- name: add remote user to postgresql
+  include: add_remote_user.yml
+  when: acname == "add_remote_user"
+  tags: ['add_remote_user']

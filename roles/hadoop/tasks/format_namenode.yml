@@ -1,0 +1,24 @@
+- name: "stop zkfc"
+  command: "{{ hadoop_dir }}/sbin/hadoop-daemon.sh stop zkfc"
+
+- name: "format zkfc"
+  command: "{{ hadoop_dir}}/bin/hdfs zkfc -formatZK -force"
+
+- name: "start zkfc"
+  command: "{{ hadoop_dir }}/sbin/hadoop-daemon.sh start zkfc"
+
+- name: "stop namenode"
+  command: "{{ hadoop_dir }}/sbin/hadoop-daemon.sh stop namenode"
+
+- name: "format namenode"
+  command: "{{ hadoop_dir }}/bin/hdfs namenode -format -force"
+
+- name: "start namenode"
+  command: "{{ hadoop_dir }}/sbin/hadoop-daemon.sh start namenode"
+
+# - name: "stop httpfs"
+#   shell: "HTTPFS_CONFIG='{{hadoop_dir}}/conf' {{ hadoop_dir }}/sbin/httpfs.sh stop"
+
+- name: "start httpfs"
+  shell: "HTTPFS_CONFIG='{{hadoop_dir}}/conf' {{ hadoop_dir }}/sbin/httpfs.sh start"
+

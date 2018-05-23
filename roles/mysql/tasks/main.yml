@@ -1,0 +1,39 @@
+---
+
+# roles/mysql/tasks/main.yml
+
+- name: Install mysql if not installed
+  yum:
+    name: mariadb-server
+    state: present
+  tags: ['start', 'stop', 'restart', 'add_remote_user']
+
+- name: Start mysql
+  include: start.yml
+  when: acname == "start"
+  tags: ['start']
+
+- name: Stop mysql
+  include: stop.yml
+  when: acname == "stop"
+  tags: ['stop']
+
+- name: Restart mysql
+  include: restart.yml
+  when: acname == "restart"
+  tags: ['restart']
+
+- name: add remote user to mysql
+  include: add_remote_user.yml
+  when: acname == "add_remote_user"
+  tags: ['add_remote_user']
+
+- name: Enable mysql
+  include: enable.yml
+  when: acname == "enable"
+  tags: ['enable']
+
+- name: Disable mysql
+  include: disable.yml
+  when: acname == "disable"
+  tags: ['disable']

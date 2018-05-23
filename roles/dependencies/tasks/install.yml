@@ -1,0 +1,42 @@
+---
+# for hawq
+- name: "install epel-release"
+  command: yum -y install epel-release
+
+- name: "install software"
+  command: yum install -y man passwd sudo tar which git mlocate links make bzip2 net-tools \
+                          autoconf automake libtool m4 gcc gcc-c++ gdb bison flex gperf maven indent \
+                          libuuid-devel krb5-devel libgsasl-devel expat-devel libxml2-devel \
+                          perl-ExtUtils-Embed pam-devel python-devel libcurl-devel snappy-devel \
+                          thrift-devel libyaml-devel libevent-devel bzip2-devel openssl-devel \
+                          openldap-devel protobuf-devel readline-devel net-snmp-devel apr-devel \
+                          libesmtp-devel python-pip json-c-devel \
+                          java-1.8.0-openjdk-devel lcov cmake \
+                          openssh-clients openssh-server perl-JSON perl-Env
+
+- name: "instal software"
+  command: pip --retries=50 --timeout=300 install pycrypto
+
+# for hue
+- name: "install software"
+  command: yum install -y ant gcc g++ krb5-devel libffi-devel mariadb-devel openssl-devel \
+                          cyrus-sasl-devel cyrus-sasl-gssapi libsqlite3x-devel libtidy-devel \
+                          libxml2-devel libxslt-devel make openldap-devel maven python-devel \
+                          python-setuptools gmp-devel cyrus-sasl-plain mariadb-server
+
+# install scala
+- name: Download Scala tar
+  get_url:
+    url: "{{ scala_download_url }}"
+    dest: "{{ scala_install_dir }}"
+    mode: 0644
+
+- name: "Ensure the scala dir exists at {{scala_home}}"
+  file: path={{scala_home}} state=directory
+
+- name: Unpack tarball.
+  command: tar zxf {{scala_install_dir}}/scala-{{scala_version}}.tgz --strip-components=1 chdir={{scala_home}} creates={{scala_home}}/bin
+
+- name: "install lzo"
+  command: yum install -y lzo-devel
+

@@ -1,0 +1,12 @@
+ec2_url:                "http://ec2.us-west-2.amazonaws.com" 
+region:                 "us-west-2"
+
+table_name:             "asdfsx_test_dynamodb"
+hash_key_name:          "Username"
+hash_key_type:          "STRING"
+range_key_name:         "Timestamp"
+range_key_type:         "STRING"
+read_capacity:          1
+write_capacity:         1
+tags:
+  stream: enabled

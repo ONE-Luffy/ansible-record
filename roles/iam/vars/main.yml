@@ -1,0 +1,22 @@
+region:     "us-west-2"
+ec2_url:    "http://ec2.us-west-2.amazonaws.com" 
+accountid:  "451299163191"
+
+dynamodb_table: "asdfsx_test_dynamodb"
+
+iam_roles:
+  - role_name: asdfsx_test_lambda
+    path: /service-role/
+    trust_policy:
+      Version: '2012-10-17'
+      Statement:
+      - Action: sts:AssumeRole
+        Effect: Allow
+        Principal:
+          Service: lambda.amazonaws.com 
+
+iam_policies:
+  - policy_name: asdfsx_test_policy
+    iam_type:    role
+    iam_name:    asdfsx_test_lambda
+    policy_json: " {{ lookup( 'template', 'role-policy.json')|to_json }} "

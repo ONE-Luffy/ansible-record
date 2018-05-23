@@ -1,0 +1,11 @@
+TENGINE_VERSION: 2.1.2
+TENGINE_URL: http://tengine.taobao.org/download/tengine-2.1.2.tar.gz
+TARBALL_NAME: tengine-2.1.2.tar.gz
+BUILD_DIR: /root/tengine-{{ TENGINE_VERSION }}
+DOWNLOAD_DIR: /root
+INSTALLATION_DIR: /usr/local/tenginx
+TENGINX_APP_LOG_DIR: /usr/local/tenginx/logs/app
+TENGINX_APP_LOG_PATH: "{{ TENGINX_APP_LOG_DIR }}/%Y%m%d/access_%Y%m%d%H.log"
+PRODUCER_LOG_PATH: "{{ TENGINX_APP_LOG_DIR }}/%s/access_%s.log"
+PRODUCER_URL: https://github.com/asdfsx/kafkaproducer/archive/master.zip
+PRODUCER_PATH: /root/kafkaproducer-master

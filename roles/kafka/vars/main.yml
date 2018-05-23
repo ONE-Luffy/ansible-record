@@ -1,0 +1,19 @@
+KAFKA_VERSION: 0.10.2.1
+SCALA_VERSION: 2.11
+KAFKA_URL: http://www.us.apache.org/dist/kafka/{{ KAFKA_VERSION }}/kafka_{{ SCALA_VERSION }}-{{ KAFKA_VERSION }}.tgz
+KAFKA_TAR: kafka_{{ SCALA_VERSION }}-{{ KAFKA_VERSION }}.tgz
+INSTALLATION_DIR: /usr/local
+KAFKA_DATA_DIR: /var/lib/kafka
+KAFKA_LOG_DIR: /var/log/kafka
+KAFKA_HOME: "{{ INSTALLATION_DIR }}/kafka"
+
+ZOOKEEPER_DATA_DIR: /var/lib/zookeeper
+ZOOKEEPER_LOG_DIR: /var/log/zookeeper
+
+# KAFKA service commands
+KAFKA_START_COMMAND: "KAFKA_HEAP_OPTS=\"-Xms128m -Xmx256m\" {{ KAFKA_HOME }}/bin/kafka-server-start.sh -daemon {{ KAFKA_HOME }}/config/server.cfg"
+KAFKA_STOP_COMMAND: "KAFKA_HEAP_OPTS=\"-Xms128m -Xmx256m\" {{ KAFKA_HOME }}/bin/kafka-server-stop.sh"
+
+# ZOOKEEPER service commands
+ZOOKEEPER_START_COMMAND: "KAFKA_HEAP_OPTS=\"-Xms32m -Xmx32m\" {{ KAFKA_HOME }}/bin/zookeeper-server-start.sh -daemon {{ KAFKA_HOME }}/config/zoo.cfg"
+ZOOKEEPER_STOP_COMMAND: "KAFKA_HEAP_OPTS=\"-Xms32m -Xmx32m\" {{ KAFKA_HOME }}/bin/zookeeper-server-stop.sh"

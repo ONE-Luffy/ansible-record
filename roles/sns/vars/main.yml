@@ -1,0 +1,7 @@
+topic_name:             "asdfsx_test_sns"
+topic_display_name:     "asdfsx's test"
+ec2_url:                "http://ec2.us-west-2.amazonaws.com" 
+region:                 "us-west-2"
+subscriptions:
+  - endpoint:           "asdfsx@gmail.com"
+    protocol:           "email"

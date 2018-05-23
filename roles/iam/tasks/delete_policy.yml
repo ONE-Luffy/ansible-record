@@ -1,0 +1,9 @@
+
+- name: Delete Policy
+  iam_policy:
+    iam_type: "{{ item.iam_type }}"
+    iam_name: "{{ item.iam_name }}"
+    policy_name: "{{ item.policy_name }}"
+    state: absent
+  with_items:
+    "{{ iam_policies }}"

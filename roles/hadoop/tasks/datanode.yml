@@ -1,0 +1,2 @@
+- name: start datanode
+  command: "{{hadoop_dir}}/sbin/hadoop-daemons.sh start datanode"

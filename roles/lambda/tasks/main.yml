@@ -1,0 +1,11 @@
+---
+
+- name: Create Lambda Function
+  include: create_function.yml
+  when: acname == "create_function"
+  tags: ['create_function']
+
+- name: Delete Lambda Function
+  include: delete_function.yml
+  when: acname == "delete_function"
+  tags: ['delete_function']

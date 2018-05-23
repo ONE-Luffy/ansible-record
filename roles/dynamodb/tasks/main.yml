@@ -1,0 +1,11 @@
+---
+
+- name: Create Dynamodb Table
+  include: create.yml
+  when: acname == "create"
+  tags: ['create']
+
+- name: Delete Dynamodb Table
+  include: delete.yml
+  when: acname == "delete"
+  tags: ['delete']

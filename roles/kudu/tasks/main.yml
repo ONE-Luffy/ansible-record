@@ -1,0 +1,80 @@
+---
+
+# roles/mysql/tasks/main.yml
+
+- name: add new repositories into system
+  template:
+    src: "{{ item }}"
+    dest: "/etc/yum.repos.d/{{ item }}"
+  with_items:
+    - cloudera-kudu.repo
+    - cloudera-cdh5.repo
+    - cloudera-impala-kudu.repo
+  tags: ['start', 'stop', 'restart']
+
+- name: Install kudu if not installed
+  yum:
+    name: kudu,kudu-master,kudu-tserver,kudu-client0,kudu-client-devel
+    state: present
+  tags: ['start', 'stop', 'restart']
+
+- name: Install java-1.8.0-openjdk-devel, gcc etc
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - java-1.8.0-openjdk-devel
+    - gcc
+    - gcc-c++
+    - python-devel
+  tags: ['start', 'stop', 'restart']
+
+- name: Install impala if not installed
+  yum:
+    name: impala,impala-server,impala-state-store,impala-catalog,impala-shell
+    state: present
+  tags: ['start', 'stop', 'restart']
+
+- name: Install pip
+  command:
+    easy_install pip
+  tags: ['start', 'stop', 'restart']
+
+- name: Install cython
+  command:
+    pip install cython
+  tags: ['start', 'stop', 'restart']
+
+- name: Install kudu-python
+  command:
+    pip install kudu-python
+  tags: ['start', 'stop', 'restart']
+
+- name: Configure kudu
+  include: configure.yml
+  tags: ['start', 'stop', 'restart']
+
+- name: Start kudu
+  include: start.yml
+  when: acname == "start"
+  tags: ['start']
+
+- name: Stop kudu
+  include: stop.yml
+  when: acname == "stop"
+  tags: ['stop']
+
+- name: Restart kudu
+  include: restart.yml
+  when: acname == "restart"
+  tags: ['restart']
+
+- name: Enable kudu
+  include: enable.yml
+  when: acname == "enable"
+  tags: ['enable']
+
+- name: Disable kudu
+  include: disable.yml
+  when: acname == "disable"
+  tags: ['disable']

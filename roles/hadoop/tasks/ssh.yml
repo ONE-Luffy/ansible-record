@@ -1,0 +1,110 @@
+
+
+- name: Gather facts
+  ec2_facts:
+  register:
+    ec2s
+
+- debug: var=ec2s
+
+- debug: 
+    msg: "{{ item[0] }}"
+  delegate_to: "{{ item[1] }}"
+  with_nested:
+    - "{{ ec2s['ansible_facts']['ansible_ec2_local_ipv4'] }}"
+    - "{{ groups['hadoop'] }}"
+
+- name: backup authorized_key
+  command: cp /root/.ssh/authorized_keys /root/.ssh/authorized_keys_origin creates=/root/.ssh/authorized_keys_origin
+
+- name: clean authorized_key
+  command: cp /root/.ssh/authorized_keys_origin /root/.ssh/authorized_keys
+
+- name: Create ssh key 
+  shell: echo y | ssh-keygen -t rsa -N '' -f /root/.ssh/id_rsa
+
+- name: Collect ssh keys
+  shell: cat ~/.ssh/id_rsa.pub
+  register: ssh_keys
+
+- name: check keys
+  debug: msg="{{ ssh_keys.stdout }}"
+
+- name: deploy keys on all servers
+  authorized_key: 
+    user: root 
+    key: "{{ hostvars[item].ssh_keys.stdout }}"
+  with_items:
+    - "{{ groups['hadoop'] }}"
+
+- name: For each host, scan for its ssh public key
+  command: "ssh-keyscan -t rsa {{ item }}"
+  register: hosts
+  with_items: "{{ groups['hadoop'] }}"
+
+- name: check hosts
+  debug: msg="{{ hosts.results }}"
+
+- name: deploy hosts on all servers
+  known_hosts:
+    name: "{{ item.item }}"
+    key: "{{ item.stdout }}"
+    path: "/root/.ssh/known_hosts"
+  with_items: '{{ hosts.results }}'
+
+- debug:
+    msg: "{{ hostvars[item].ansible_eth0 }}"
+  with_items: "{{ groups['hadoop'] }}"
+
+- name: For each host, scan for its ssh public key, use ipaddress instead of hostname
+  command: "ssh-keyscan -t rsa {{ hostvars[item].ansible_eth0.ipv4.address }}"
+  register: hosts
+  with_items: "{{ groups['hadoop'] }}"
+
+- name: check hosts
+  debug: msg="{{ hosts.results }}"
+
+- name: deploy hosts on all servers
+  known_hosts:
+    name: "{{ hostvars[item.item].ansible_eth0.ipv4.address }}"
+    key: "{{ item.stdout }}"
+    path: "/root/.ssh/known_hosts"
+  with_items: '{{ hosts.results }}'
+
+- name: For each host, scan for its ssh public key, use ec2 nodename instead of ipaddr
+  command: "ssh-keyscan -t rsa {{ hostvars[item].ansible_nodename }}"
+  register: hosts
+  with_items: "{{ groups['hadoop'] }}"
+
+- name: check hosts
+  debug: msg="{{ hosts.results }}"
+
+- name: check hosts
+  debug: msg="{{ hostvars[item.item] }}"
+  with_items: '{{ hosts.results }}'
+
+- name: deploy hosts on all servers
+  known_hosts:
+    name: "{{ hostvars[item.item].ansible_nodename }}"
+    key: "{{ item.stdout }}"
+    path: "/root/.ssh/known_hosts"
+  with_items: "{{ hosts.results }}"
+
+- name: For each host, scan for its ssh public key, use ec2 nodename instead of ipaddr
+  command: "ssh-keyscan -t rsa {{ hostvars[item].ansible_fqdn }}"
+  register: hosts
+  with_items: "{{ groups['hadoop'] }}"
+
+- name: check hosts
+  debug: msg="{{ hosts.results }}"
+
+- name: check hosts
+  debug: msg="{{ hostvars[item.item] }}"
+  with_items: '{{ hosts.results }}'
+
+- name: deploy hosts on all servers
+  known_hosts:
+    name: "{{ hostvars[item.item].ansible_fqdn }}"
+    key: "{{ item.stdout }}"
+    path: "/root/.ssh/known_hosts"
+  with_items: "{{ hosts.results }}"

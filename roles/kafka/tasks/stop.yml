@@ -1,0 +1,22 @@
+- name: Check if kafka is running or not
+  include: service.yml stage='before stop action'
+
+- name: kafka_service_status
+  debug:
+    msg: "{{ kafka_service_status.rc }}"
+
+- name: zoo_service_status
+  debug:
+    msg: "{{ zoo_service_status.rc }}"
+
+- name: Stop kafka service
+  shell: "{{ KAFKA_STOP_COMMAND }}"
+  when: kafka_service_status.rc == 1
+#  notify:
+#    - kafka_service_status report
+
+- name: Stop zookeeper service
+  shell: "{{ ZOOKEEPER_STOP_COMMAND }}"
+  when: zoo_service_status.rc == 1
+#  notify:
+#    - zoo_service_status report

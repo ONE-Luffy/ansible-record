@@ -1,0 +1,32 @@
+- name: download producer
+  get_url:
+    url: "{{ PRODUCER_URL }}"
+    dest: "{{ DOWNLOAD_DIR }}"
+    mode: 0644
+
+- name: unzip producer
+  shell: unzip master.zip
+  args:
+    chdir: "{{ DOWNLOAD_DIR }}"
+    creates: "{{ PRODUCER_PATH }}"
+
+- name: install pip
+  command: easy_install pip
+
+- name: install dependcies
+  shell: pip install -r requirements.txt
+  args:
+    chdir: "{{ PRODUCER_PATH }}"
+
+- name: config producer
+  template:
+    src: "{{ item }}"
+    dest: "{{ PRODUCER_PATH }}/etc"
+  with_items:
+    - producer.conf
+    - supervisord.conf
+
+- name: start producer by supervisord
+  shell: supervisord -c etc/supervisord.conf
+  args:
+    chdir: "{{ PRODUCER_PATH }}"

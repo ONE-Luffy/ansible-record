@@ -1,0 +1,47 @@
+---
+- name: Fail play if the cluster tag Name is not defined
+  fail:
+    msg: "Specify 'Name' for the cluster in tag_key_vals variable"
+  when: tag_key_vals.Name is undefined
+  tags: ["launch"]
+
+- name: Fail play if the acname name is not defined
+  fail: 
+    msg: "Specify the acname name: -e 'acname=launch'"
+  when: acname is undefined
+  tags: ["keypair", "launch", "start", "stop", terminate", "describe", "ssh"]
+
+- name: Create KeyPair
+  include: keypair.yml
+  when: acname == "keypair"
+  tags: ['keypair']
+
+- name: Launch EC2 instances
+  include: launch.yml
+  when: acname == "launch"
+  tags: ['launch']
+
+- name: Start stopped EC2 instances
+  include: start.yml
+  when: acname == "start"
+  tags: ['start']
+
+- name: Stop EC2 instances
+  include: stop.yml
+  when: acname == "stop"
+  tags: ['stop']
+
+- name: Terminate EC2 instances
+  include: terminate.yml
+  when: acname == "terminate"
+  tags: ['terminate']
+
+- name: Describe EC2 instances info
+  include: describe.yml
+  when: acname == "describe"
+  tags: ['describe']
+
+- name: update known_hosts
+  include: ssh.yml
+  when: acname == "ssh"
+  tags: ['ssh']

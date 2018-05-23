@@ -1,0 +1,19 @@
+---
+- name: Creating host group nginx from dynamic inventory
+  hosts: localhost
+  connection: local
+  tags: ['start', 'stop', 'restart', 'enable', 'disable', 'install', 'configure', 'deploy']
+  vars:
+    nginx_tag_name: "tag_{{ nginx_tag | replace('-', '_') }}"
+  tasks:
+    - add_host: name={{ item }} groups=nginx
+      with_items: "{{ groups[nginx_tag_name] }}"
+
+- name: Execute nginx roles
+  hosts: nginx
+  user: centos
+  become: true
+  become_method: sudo
+  become_user: root
+  roles:
+    - role: nginx

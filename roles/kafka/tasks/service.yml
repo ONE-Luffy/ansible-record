@@ -1,0 +1,38 @@
+- name: Check if kakfa service is running
+  shell: ps aux | grep kafka | grep -v grep
+  ignore_errors: yes
+  register: kafka_service_status
+
+- name: Kafka sevice (running or stopped) report
+  debug:
+    msg: "{{ stage }} | Kafka server is {% if kafka_service_status.rc != 0 %}not {% endif %}running"
+
+- name: Check server mode - leader or follower
+  shell: echo srvr | nc localhost 9020 | grep Mode
+  ignore_errors: yes
+  register: server_mode
+
+- name: Kafka server_mode report
+  debug:
+    msg: "{{ server_mode.stdout }}"
+  when: kafka_service_status.rc == 0
+
+- name: Check if zookeeper service is running
+  shell: ps aux | grep zookeeper | grep -v grep
+  ignore_errors: yes
+  register: zoo_service_status
+
+- name: Zookeeper sevice (running or stopped) report
+  debug:
+    msg: "{{ stage }} | Zookeeper server is {% if zoo_service_status.rc != 0 %}not {% endif %}running"
+
+- name: Check server mode - leader or follower
+  shell: echo srvr | nc localhost 2181 | grep Mode
+  ignore_errors: yes
+  register: server_mode
+
+- name: Zookeeper server_mode report
+  debug:
+    msg: "{{ server_mode.stdout }}"
+  when: zoo_service_status.rc == 0
+

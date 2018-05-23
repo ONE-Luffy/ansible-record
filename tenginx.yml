@@ -1,0 +1,19 @@
+---
+- name: Creating host group tenginx from dynamic inventory
+  hosts: localhost
+  connection: local
+  tags: ['start', 'stop', 'restart', 'enable', 'disable', 'install', 'configure', 'deploy']
+  vars:
+    tenginx_tag_name: "tag_{{ tenginx_tag | replace('-', '_') }}"
+  tasks:
+    - add_host: name={{ item }} groups=tenginx
+      with_items: "{{ groups[tenginx_tag_name] }}"
+
+- name: Execute tenginx roles
+  hosts: tenginx
+  user: centos
+  become: true
+  become_method: sudo
+  become_user: root
+  roles:
+    - role: tenginx

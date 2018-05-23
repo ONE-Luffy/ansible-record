@@ -1,0 +1,10 @@
+- name: Delete Lambda functions
+  lambda:
+    ec2_url:          "{{ item.ec2_url }}"
+    region:           "{{ item.region }}"
+    name:             "{{ item.name }}"
+    runtime:          "{{ item.runtime }}"
+    role:             "{{ item.role }}"
+    state:            "absent"
+  with_items:
+    "{{ lambda_functions }}"

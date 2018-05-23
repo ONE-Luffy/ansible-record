@@ -1,0 +1,8 @@
+- name: "start namenode"
+  command: "{{ hadoop_dir }}/sbin/hadoop-daemon.sh stop namenode"
+
+- name: sync data to standby namenode
+  shell: "echo y | {{hadoop_dir}}/bin/hdfs namenode -bootstrapStandby"
+
+- name: start standby namenode
+  command: "{{hadoop_dir}}/sbin/hadoop-daemon.sh start namenode"

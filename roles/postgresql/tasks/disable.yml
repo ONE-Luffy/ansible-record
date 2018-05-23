@@ -1,0 +1,4 @@
+---
+
+- name: disable postgresql
+  command: systemctl disable postgresql

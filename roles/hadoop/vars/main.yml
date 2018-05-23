@@ -1,0 +1,29 @@
+HADOOP_VERSION: 2.7.3
+HADOOP_URL: http://www.us.apache.org/dist/hadoop/common/hadoop-{{ HADOOP_VERSION }}/hadoop-{{ HADOOP_VERSION }}.tar.gz
+HADOOP_TAR: hadoop-{{ HADOOP_VERSION }}.tar.gz
+INSTALLATION_DIR: /usr/local
+HADOOP_DATA_DIR: /var/lib/hadoop
+HADOOP_LOG_DIR: /var/log/hadoop
+HADOOP_HOME: "{{ INSTALLATION_DIR }}/hadoop"
+HADOOP_SITENAME: hadoop4test
+
+# HADOOP service commands
+HADOOP_START_COMMAND: "{{ HADOOP_HOME }}/bin/zkServer.sh start"
+HADOOP_STOP_COMMAND: "{{ HADOOP_HOME }}/bin/zkServer.sh stop"
+
+dfs_blocksize: 16777216
+max_xcievers: 64
+data_dir: "{{ HADOOP_DATA_DIR }}"
+dfs_dn_dir: "{{ data_dir }}/dfs/dn"
+dfs_nn_dir: "{{ data_dir }}/dfs/nn"
+qjournal_dir: "{{ data_dir }}/qjournal"
+socket_dir: "{{ data_dir }}/socket"
+yarn_app_log_dir: "{{ data_dir }}/yarn/apps"
+yarn_data_local: "{{ data_dir }}/yarn/local"
+
+log_dir: "{{ HADOOP_LOG_DIR }}"
+yarn_data_log: "{{ log_dir }}/yarn/logs"
+site_name: "{{ HADOOP_SITENAME }}"
+hadoop_version: 2.7.3
+hadoop_dir: "{{ HADOOP_HOME }}"
+hadoop_conf_dir: "{{ HADOOP_HOME }}/conf"
